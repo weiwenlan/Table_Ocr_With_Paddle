@@ -25,7 +25,8 @@ This is the Table extraction model in which you just turn an image of a table an
 
 # Dependent 
 All codes modified from the PaddlePaddle OCR, need to first setup [paddlepaddle](https://github.com/PaddlePaddle/PaddleOCR)
-[QUICK START](QuickStart.md)
+
+[QUICK INSTALL](QuickStart.md)
 
 
 # Model
@@ -55,7 +56,6 @@ After pops out the waiting line `Extract Table From Image ("?"/"h" for help,"x" 
 Just use your Screenshots tools to cut an image in the clipboard
 and input enter. You will see the final result in the `./example.csv` and the screenshot as `pic.png`
 
----
 
 OR use it with local image `--image_dir=''`
 
