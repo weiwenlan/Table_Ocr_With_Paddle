@@ -252,37 +252,37 @@ def call_model(args):
 
 
 def main(args):
-    # image_file_list = get_image_file_list(args.image_dir)
-    # text_sys = TextSystem(args)
-    # is_visualize = True
-    # font_path = args.vis_font_path
-    # drop_score = args.drop_score
+    
 
-    while True:
-        instructions = input('Extract Table From Image ("?"/"h" for help,"x" for exit).')
-        ins = instructions.strip().lower()
-        if ins == 'x':
-            break
-        try:
-            call_model(args)
-        except KeyboardInterrupt:
-            pass
+    if not args.clipboard:
+        image_file_list = get_image_file_list(args.image_dir)
+        text_sys = TextSystem(args)
+        is_visualize = True
+        font_path = args.vis_font_path
+        drop_score = args.drop_score
+        for image_file in image_file_list:
+            img, flag = check_and_read_gif(image_file)
+            if not flag:
+                img = cv2.imread(image_file)
+            if img is None:
+                logger.info("error in loading image:{}".format(image_file))
+                continue
+            starttime = time.time()
+            dt_boxes, rec_res = text_sys(img)
+            elapse = time.time() - starttime
+            logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
 
-'''
-    for image_file in image_file_list:
-        img, flag = check_and_read_gif(image_file)
-        if not flag:
-            img = cv2.imread(image_file)
-        if img is None:
-            logger.info("error in loading image:{}".format(image_file))
-            continue
-        starttime = time.time()
-        dt_boxes, rec_res = text_sys(img)
-        elapse = time.time() - starttime
-        logger.info("Predict time of %s: %.3fs" % (image_file, elapse))
-
-        out_table(dt_boxes,rec_res)
-'''
+            out_table(dt_boxes,rec_res)
+    else:
+        while True:
+            instructions = input('Extract Table From Image ("?"/"h" for help,"x" for exit).')
+            ins = instructions.strip().lower()
+            if ins == 'x':
+                break
+            try:
+                call_model(args)
+            except KeyboardInterrupt:
+                pass
 
 
 if __name__ == "__main__":
